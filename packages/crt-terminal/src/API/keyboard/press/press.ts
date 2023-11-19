@@ -36,8 +36,6 @@ const newRender = ({ renderValue, cursorPosition, newInput }: RenderProps) => {
   ];
 };
 
-const t = 5
-
 const press = ({ newInput, renderValue, cursorPosition }: KeyboardRequest): KeyboardResponse => {
   if (!newInput) throw new Error('Cannot press without a new input');
   if (newInput.length < renderValue.length) throw new Error('New input is shorter then old one');
