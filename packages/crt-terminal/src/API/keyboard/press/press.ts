@@ -10,6 +10,11 @@ const newPosition = ({ oldLength, newLength, cursorPosition }: PositionProps) =>
   const wasLast = oldLength === cursorPosition;
 
   if (wasLast) return newLength;
+
+  // if inserting text in middle of line
+  if (cursorPosition < oldLength && newLength > oldLength) return cursorPosition + 1;
+
+
   return cursorPosition;
 };
 
@@ -30,6 +35,8 @@ const newRender = ({ renderValue, cursorPosition, newInput }: RenderProps) => {
     ...renderValue.slice(cursorPosition, oldLength),
   ];
 };
+
+const t = 5
 
 const press = ({ newInput, renderValue, cursorPosition }: KeyboardRequest): KeyboardResponse => {
   if (!newInput) throw new Error('Cannot press without a new input');
