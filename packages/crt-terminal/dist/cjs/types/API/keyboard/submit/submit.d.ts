@@ -1,0 +1,10 @@
+import { Keyboard, KeyboardResponse, RenderList } from '../actions/actions';
+declare const submitActions: readonly [Keyboard.ENTER];
+declare type SubmitActions = typeof submitActions[number];
+declare const isSubmitActions: (str: string) => str is Keyboard.ENTER;
+declare const DEFAULT_INPUT = "";
+declare const DEFAULT_RENDER: RenderList;
+declare const DEFAULT_POSITION = 0;
+declare const submit: () => KeyboardResponse;
+export type { SubmitActions };
+export { submit, isSubmitActions, DEFAULT_INPUT, DEFAULT_RENDER, DEFAULT_POSITION };
