@@ -32,3 +32,6 @@ yarn-error.log*
 # turbo
 .turbo
 packages/crt-terminal/.rollup.cache
+
+# jetbrains
+**/*.idea

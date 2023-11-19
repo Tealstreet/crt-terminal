@@ -151,11 +151,9 @@ function useTerminalController({
       submitCommand();
 
       const characters = inputValue.trim();
-      if (characters) {
-        addCommand(characters);
-        enqueue({ type: PrinterEvents.PRINT, payload: [printCommandLine({ characters, prompt })] });
-        onCommand(characters);
-      }
+      addCommand(characters);
+      enqueue({ type: PrinterEvents.PRINT, payload: [printCommandLine({ characters, prompt })] });
+      onCommand(characters);
     }
   };
 
