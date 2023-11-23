@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import {
   add,
   next,
@@ -27,7 +27,7 @@ const defaultState: CommandHistoryState = {
 
 function useCommandHistory({ maxHistoryCommands, initCommandHistory }: CommandHistoryProps) {
   const [commandsHistory, setCommandsHistory] = useState<CommandsHistory>(
-      initCommandHistory || defaultState.commandsHistory,
+      defaultState.commandsHistory,
   );
   const [cursorPosition, setCursorPosition] = useState<CommandsHistoryKey>(
     defaultState.cursorPosition,
@@ -44,6 +44,16 @@ function useCommandHistory({ maxHistoryCommands, initCommandHistory }: CommandHi
   const addCommand = (command: Command) => {
     setState(add({ maxHistoryCommands, commandsHistory, command }));
   };
+
+  useEffect(() => {
+    if (initCommandHistory) {
+      initCommandHistory.forEach((command) => {
+        addCommand(command);
+      });
+    }
+    // eslint-disable-next-line
+  }, [initCommandHistory]);
+
 
   const nextCommand = () => {
     const { command, ...rest } = next({

@@ -388,7 +388,7 @@ var add = function (_a) {
     var sameCommand = commandsHistory[lastIndex] === command;
     if (sameCommand)
         return { commandsHistory: commandsHistory, cursorPosition: commandsLength };
-    var canAppend = commandsLength < maxHistoryCommands;
+    var canAppend = command.trim().length && commandsLength < maxHistoryCommands;
     if (canAppend)
         return {
             commandsHistory: __spreadArray(__spreadArray([], commandsHistory, true), [command], false),
@@ -410,7 +410,7 @@ var defaultState$2 = {
 };
 function useCommandHistory(_a) {
     var maxHistoryCommands = _a.maxHistoryCommands, initCommandHistory = _a.initCommandHistory;
-    var _b = React.useState(initCommandHistory || defaultState$2.commandsHistory), commandsHistory = _b[0], setCommandsHistory = _b[1];
+    var _b = React.useState(defaultState$2.commandsHistory), commandsHistory = _b[0], setCommandsHistory = _b[1];
     var _c = React.useState(defaultState$2.cursorPosition), cursorPosition = _c[0], setCursorPosition = _c[1];
     var setState = function (_a) {
         var newCommandsHistory = _a.commandsHistory, newCursorPosition = _a.cursorPosition;
@@ -422,6 +422,14 @@ function useCommandHistory(_a) {
     var addCommand = function (command) {
         setState(add({ maxHistoryCommands: maxHistoryCommands, commandsHistory: commandsHistory, command: command }));
     };
+    React.useEffect(function () {
+        if (initCommandHistory) {
+            initCommandHistory.forEach(function (command) {
+                addCommand(command);
+            });
+        }
+        // eslint-disable-next-line
+    }, [initCommandHistory]);
     var nextCommand = function () {
         var _a = next$1({
             commandsHistory: commandsHistory,
@@ -438,6 +446,7 @@ function useCommandHistory(_a) {
         setState(rest);
         return command;
     };
+    console.log(prevCommand);
     return {
         state: {
             commandsHistory: commandsHistory,
@@ -1391,7 +1400,7 @@ var classes = {"terminal":"terminal-module_terminal__4qfYI","overflowContainer":
 styleInject(css_248z);
 
 var Terminal = function Terminal(_a) {
-    var onCommand = _a.onCommand, queue = _a.queue, banner = _a.banner, _b = _a.prompt, prompt = _b === void 0 ? '>\xa0' : _b, _c = _a.cursorSymbol, cursorSymbol = _c === void 0 ? '\xa0' : _c, _d = _a.maxHistoryCommands, maxHistoryCommands = _d === void 0 ? 10 : _d; _a.initCommandHistory; var _f = _a.loader, _g = _f === void 0 ? {} : _f, _h = _g.slides, slides = _h === void 0 ? ['.', '..', '...'] : _h, _j = _g.loaderSpeed, loaderSpeed = _j === void 0 ? 1000 : _j, _k = _a.printer, _l = _k === void 0 ? {} : _k, _m = _l.printerSpeed, printerSpeed = _m === void 0 ? 20 : _m, _o = _l.charactersPerTick, charactersPerTick = _o === void 0 ? 5 : _o, _p = _a.effects, _q = _p === void 0 ? {} : _p, _r = _q.scanner, scanner = _r === void 0 ? true : _r, _s = _q.pixels, pixels = _s === void 0 ? true : _s, _t = _q.screenEffects, screenEffects = _t === void 0 ? true : _t, _u = _q.textEffects, textEffects = _u === void 0 ? true : _u, _v = _a.focusOnMount, focusOnMount = _v === void 0 ? true : _v;
+    var onCommand = _a.onCommand, queue = _a.queue, banner = _a.banner, _b = _a.prompt, prompt = _b === void 0 ? '>\xa0' : _b, _c = _a.cursorSymbol, cursorSymbol = _c === void 0 ? '\xa0' : _c, _d = _a.maxHistoryCommands, maxHistoryCommands = _d === void 0 ? 10 : _d, _e = _a.initCommandHistory, initCommandHistory = _e === void 0 ? [] : _e, _f = _a.loader, _g = _f === void 0 ? {} : _f, _h = _g.slides, slides = _h === void 0 ? ['.', '..', '...'] : _h, _j = _g.loaderSpeed, loaderSpeed = _j === void 0 ? 1000 : _j, _k = _a.printer, _l = _k === void 0 ? {} : _k, _m = _l.printerSpeed, printerSpeed = _m === void 0 ? 20 : _m, _o = _l.charactersPerTick, charactersPerTick = _o === void 0 ? 5 : _o, _p = _a.effects, _q = _p === void 0 ? {} : _p, _r = _q.scanner, scanner = _r === void 0 ? true : _r, _s = _q.pixels, pixels = _s === void 0 ? true : _s, _t = _q.screenEffects, screenEffects = _t === void 0 ? true : _t, _u = _q.textEffects, textEffects = _u === void 0 ? true : _u, _v = _a.focusOnMount, focusOnMount = _v === void 0 ? true : _v;
     var terminalApp = useTerminalApp();
     var terminalRef = terminalApp.state.terminalRef, scrollDown = terminalApp.handlers.scrollDown;
     var _w = useCommandScreen({
@@ -1399,7 +1408,7 @@ var Terminal = function Terminal(_a) {
     }), state = _w.state, screenHandlers = _w.handlers;
     var commandLine = useCommandLine();
     var _x = useCommandLineInput(), inputElementRef = _x.state.inputElementRef, inputHandlers = _x.handlers;
-    var commandHistory = useCommandHistory({ maxHistoryCommands: maxHistoryCommands });
+    var commandHistory = useCommandHistory({ maxHistoryCommands: maxHistoryCommands, initCommandHistory: initCommandHistory });
     var loaderComponent = useLoader({
         slides: slides,
         loaderSpeed: loaderSpeed,

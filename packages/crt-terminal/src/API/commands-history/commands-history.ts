@@ -60,7 +60,7 @@ const add = ({
   const sameCommand = commandsHistory[lastIndex] === command;
   if (sameCommand) return { commandsHistory, cursorPosition: commandsLength };
 
-  const canAppend = commandsLength < maxHistoryCommands;
+  const canAppend = command.trim().length && commandsLength < maxHistoryCommands;
   if (canAppend)
     return {
       commandsHistory: [...commandsHistory, command],
