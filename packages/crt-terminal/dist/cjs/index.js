@@ -409,8 +409,8 @@ var defaultState$2 = {
     cursorPosition: 0,
 };
 function useCommandHistory(_a) {
-    var maxHistoryCommands = _a.maxHistoryCommands;
-    var _b = React.useState(defaultState$2.commandsHistory), commandsHistory = _b[0], setCommandsHistory = _b[1];
+    var maxHistoryCommands = _a.maxHistoryCommands, initCommandHistory = _a.initCommandHistory;
+    var _b = React.useState(initCommandHistory || defaultState$2.commandsHistory), commandsHistory = _b[0], setCommandsHistory = _b[1];
     var _c = React.useState(defaultState$2.cursorPosition), cursorPosition = _c[0], setCursorPosition = _c[1];
     var setState = function (_a) {
         var newCommandsHistory = _a.commandsHistory, newCursorPosition = _a.cursorPosition;
@@ -1391,14 +1391,14 @@ var classes = {"terminal":"terminal-module_terminal__4qfYI","overflowContainer":
 styleInject(css_248z);
 
 var Terminal = function Terminal(_a) {
-    var onCommand = _a.onCommand, queue = _a.queue, banner = _a.banner, _b = _a.prompt, prompt = _b === void 0 ? '>\xa0' : _b, _c = _a.cursorSymbol, cursorSymbol = _c === void 0 ? '\xa0' : _c, _d = _a.maxHistoryCommands, maxHistoryCommands = _d === void 0 ? 10 : _d, _e = _a.loader, _f = _e === void 0 ? {} : _e, _g = _f.slides, slides = _g === void 0 ? ['.', '..', '...'] : _g, _h = _f.loaderSpeed, loaderSpeed = _h === void 0 ? 1000 : _h, _j = _a.printer, _k = _j === void 0 ? {} : _j, _l = _k.printerSpeed, printerSpeed = _l === void 0 ? 20 : _l, _m = _k.charactersPerTick, charactersPerTick = _m === void 0 ? 5 : _m, _o = _a.effects, _p = _o === void 0 ? {} : _o, _q = _p.scanner, scanner = _q === void 0 ? true : _q, _r = _p.pixels, pixels = _r === void 0 ? true : _r, _s = _p.screenEffects, screenEffects = _s === void 0 ? true : _s, _t = _p.textEffects, textEffects = _t === void 0 ? true : _t, _u = _a.focusOnMount, focusOnMount = _u === void 0 ? true : _u;
+    var onCommand = _a.onCommand, queue = _a.queue, banner = _a.banner, _b = _a.prompt, prompt = _b === void 0 ? '>\xa0' : _b, _c = _a.cursorSymbol, cursorSymbol = _c === void 0 ? '\xa0' : _c, _d = _a.maxHistoryCommands, maxHistoryCommands = _d === void 0 ? 10 : _d; _a.initCommandHistory; var _f = _a.loader, _g = _f === void 0 ? {} : _f, _h = _g.slides, slides = _h === void 0 ? ['.', '..', '...'] : _h, _j = _g.loaderSpeed, loaderSpeed = _j === void 0 ? 1000 : _j, _k = _a.printer, _l = _k === void 0 ? {} : _k, _m = _l.printerSpeed, printerSpeed = _m === void 0 ? 20 : _m, _o = _l.charactersPerTick, charactersPerTick = _o === void 0 ? 5 : _o, _p = _a.effects, _q = _p === void 0 ? {} : _p, _r = _q.scanner, scanner = _r === void 0 ? true : _r, _s = _q.pixels, pixels = _s === void 0 ? true : _s, _t = _q.screenEffects, screenEffects = _t === void 0 ? true : _t, _u = _q.textEffects, textEffects = _u === void 0 ? true : _u, _v = _a.focusOnMount, focusOnMount = _v === void 0 ? true : _v;
     var terminalApp = useTerminalApp();
     var terminalRef = terminalApp.state.terminalRef, scrollDown = terminalApp.handlers.scrollDown;
-    var _v = useCommandScreen({
+    var _w = useCommandScreen({
         printerConfig: { printerSpeed: printerSpeed, charactersPerTick: charactersPerTick, afterPrintCallback: scrollDown },
-    }), state = _v.state, screenHandlers = _v.handlers;
+    }), state = _w.state, screenHandlers = _w.handlers;
     var commandLine = useCommandLine();
-    var _w = useCommandLineInput(), inputElementRef = _w.state.inputElementRef, inputHandlers = _w.handlers;
+    var _x = useCommandLineInput(), inputElementRef = _x.state.inputElementRef, inputHandlers = _x.handlers;
     var commandHistory = useCommandHistory({ maxHistoryCommands: maxHistoryCommands });
     var loaderComponent = useLoader({
         slides: slides,

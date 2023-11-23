@@ -5,9 +5,10 @@ declare type CommandHistoryState = {
 };
 declare type CommandHistoryProps = {
     maxHistoryCommands: number;
+    initCommandHistory?: CommandsHistory;
 };
 declare type CommandHistoryReturnType = ReturnType<typeof useCommandHistory>;
-declare function useCommandHistory({ maxHistoryCommands }: CommandHistoryProps): {
+declare function useCommandHistory({ maxHistoryCommands, initCommandHistory }: CommandHistoryProps): {
     state: {
         commandsHistory: CommandsHistory;
     };

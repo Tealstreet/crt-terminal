@@ -36,6 +36,7 @@ interface TerminalProps {
   prompt?: string;
   cursorSymbol?: string;
   maxHistoryCommands?: number;
+  initCommandHistory?: string[]
   banner?: PrintableItem;
 
   loader?: Partial<LoaderConfig>;
@@ -57,6 +58,7 @@ const Terminal = function Terminal({
   prompt = '>\xa0',
   cursorSymbol = '\xa0',
   maxHistoryCommands = 10,
+  initCommandHistory = [],
 
   loader: { slides = ['.', '..', '...'], loaderSpeed = 1000 } = {},
   printer: { printerSpeed = 20, charactersPerTick = 5 } = {},
@@ -81,7 +83,7 @@ const Terminal = function Terminal({
     handlers: inputHandlers,
   } = useCommandLineInput();
 
-  const commandHistory = useCommandHistory({ maxHistoryCommands });
+  const commandHistory = useCommandHistory({ maxHistoryCommands, initCommandHistory });
 
   const loaderComponent = useLoader({
     slides,

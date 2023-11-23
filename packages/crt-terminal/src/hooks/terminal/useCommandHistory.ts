@@ -15,6 +15,7 @@ type CommandHistoryState = {
 
 type CommandHistoryProps = {
   maxHistoryCommands: number;
+  initCommandHistory?: CommandsHistory;
 };
 
 type CommandHistoryReturnType = ReturnType<typeof useCommandHistory>;
@@ -24,9 +25,9 @@ const defaultState: CommandHistoryState = {
   cursorPosition: 0,
 };
 
-function useCommandHistory({ maxHistoryCommands }: CommandHistoryProps) {
+function useCommandHistory({ maxHistoryCommands, initCommandHistory }: CommandHistoryProps) {
   const [commandsHistory, setCommandsHistory] = useState<CommandsHistory>(
-    defaultState.commandsHistory,
+      initCommandHistory || defaultState.commandsHistory,
   );
   const [cursorPosition, setCursorPosition] = useState<CommandsHistoryKey>(
     defaultState.cursorPosition,

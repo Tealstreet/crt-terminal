@@ -11,6 +11,7 @@ interface TerminalProps {
     prompt?: string;
     cursorSymbol?: string;
     maxHistoryCommands?: number;
+    initCommandHistory?: string[];
     banner?: PrintableItem;
     loader?: Partial<LoaderConfig>;
     printer?: Partial<PrinterConfig>;
@@ -22,6 +23,6 @@ interface TerminalProps {
     };
     focusOnMount?: boolean;
 }
-declare const Terminal: ({ onCommand, queue, banner, prompt, cursorSymbol, maxHistoryCommands, loader: { slides, loaderSpeed }, printer: { printerSpeed, charactersPerTick }, effects: { scanner, pixels, screenEffects, textEffects }, focusOnMount }: TerminalProps) => JSX.Element;
+declare const Terminal: ({ onCommand, queue, banner, prompt, cursorSymbol, maxHistoryCommands, initCommandHistory, loader: { slides, loaderSpeed }, printer: { printerSpeed, charactersPerTick }, effects: { scanner, pixels, screenEffects, textEffects }, focusOnMount }: TerminalProps) => JSX.Element;
 export type { TerminalProps };
 export default Terminal;
