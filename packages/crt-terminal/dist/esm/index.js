@@ -438,7 +438,6 @@ function useCommandHistory(_a) {
         setState(rest);
         return command;
     };
-    console.log(prevCommand);
     return {
         state: {
             commandsHistory: commandsHistory,
