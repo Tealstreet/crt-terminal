@@ -126,9 +126,11 @@ const Terminal = function Terminal({
             <div className="crt-terminal__command-line">
               <CommandLine
                 ref={inputElementRef}
+                commandHistory={commandHistory.state.commandsHistory}
                 prompt={prompt}
                 cursorSymbol={cursorSymbol}
                 state={commandLine.state}
+                setInput={commandLine.handlers.setInput}
                 handleKeyboardDown={handleKeyboardDown}
                 handleInputChange={handleInputChange}
               />

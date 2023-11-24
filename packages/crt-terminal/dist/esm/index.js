@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useRef, useEffect, memo, useMemo } from 'react';
 
 var Keyboard;
 (function (Keyboard) {
@@ -1370,17 +1370,37 @@ var InputString = memo(function (_a) {
     return (React.createElement(React.Fragment, null, renderValue.map(function (character, key) { return (React.createElement(Character, { selected: cursorPosition === key, key: key }, character)); })));
 });
 
-var css_248z$1 = ".command-line-module_commandLine__lnMf6 {\n  padding: 1.4285714286rem 1.4285714286rem 1.4285714286rem 1.4285714286rem;\n}\n\n.command-line-module_inputWrap__OpY8r {\n  display: inline-block;\n}\n\n.command-line-module_input__ZPwEm {\n  position: absolute;\n  opacity: 0;\n  pointer-events: none;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.command-line-module_inputString__J1jZF {\n  display: inline-block;\n  overflow: visible;\n  white-space: normal;\n  word-break: break-all;\n}";
-var classes$1 = {"commandLine":"command-line-module_commandLine__lnMf6","inputWrap":"command-line-module_inputWrap__OpY8r","input":"command-line-module_input__ZPwEm","inputString":"command-line-module_inputString__J1jZF"};
+var css_248z$1 = ".command-line-module_commandLine__lnMf6 {\n  padding: 1.4285714286rem 1.4285714286rem 1.4285714286rem 1.4285714286rem;\n}\n\n.command-line-module_inputWrap__OpY8r {\n  display: inline-block;\n}\n\n.command-line-module_input__ZPwEm {\n  position: absolute;\n  opacity: 0;\n  pointer-events: none;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n      -ms-user-select: none;\n          user-select: none;\n}\n\n.command-line-module_inputString__J1jZF {\n  display: inline-block;\n  overflow: visible;\n  white-space: normal;\n  word-break: break-all;\n}\n\n.command-line-module_inputStringRecommendation__3FwD7 {\n  opacity: 0.5 !important;\n  margin-left: -8px !important;\n}";
+var classes$1 = {"commandLine":"command-line-module_commandLine__lnMf6","inputWrap":"command-line-module_inputWrap__OpY8r","input":"command-line-module_input__ZPwEm","inputString":"command-line-module_inputString__J1jZF","inputStringRecommendation":"command-line-module_inputStringRecommendation__3FwD7"};
 styleInject(css_248z$1);
 
 var CommandLine = React.forwardRef(function (_a, inputElement) {
-    var _b = _a.state, cursorPosition = _b.cursorPosition, renderValue = _b.renderValue, inputValue = _b.inputValue, handleKeyboardDown = _a.handleKeyboardDown, handleInputChange = _a.handleInputChange, prompt = _a.prompt, cursorSymbol = _a.cursorSymbol;
+    var _b = _a.state, cursorPosition = _b.cursorPosition, renderValue = _b.renderValue, inputValue = _b.inputValue, handleKeyboardDown = _a.handleKeyboardDown, handleInputChange = _a.handleInputChange, prompt = _a.prompt, cursorSymbol = _a.cursorSymbol, commandHistory = _a.commandHistory, setInput = _a.setInput;
     var handleInput = function (event) {
         var value = event.currentTarget.value;
         handleInputChange(value);
     };
+    // iterate over command history in reverse and check if any command in command history
+    // starts with input value for auto complete
+    var recommendedCommand = useMemo(function () {
+        if (inputValue) {
+            for (var i = commandHistory.length - 1; i >= 0; i--) {
+                var command = commandHistory[i];
+                if (command.startsWith(inputValue) && command !== inputValue) {
+                    return command;
+                }
+            }
+        }
+        return null;
+    }, [commandHistory, inputValue]);
     var handleKeyDown = function (event) {
+        // if key is right arrow and recommended command is available
+        // set input value to recommended command
+        if (event.key === 'ArrowRight' && recommendedCommand) {
+            setInput(recommendedCommand);
+            event.preventDefault();
+            return;
+        }
         handleKeyboardDown(event);
     };
     var lastSelected = cursorPosition === renderValue.length;
@@ -1390,7 +1410,9 @@ var CommandLine = React.forwardRef(function (_a, inputElement) {
             React.createElement("input", { className: [classes$1.input, 'crt-command-line__input'].join(' '), id: "crt-command-line-input", ref: inputElement, value: inputValue, onInput: handleInput, onKeyDown: handleKeyDown, type: "text" }),
             React.createElement("div", { className: [classes$1.inputString, 'crt-command-line__input-string'].join(' ') },
                 React.createElement(InputString, { renderValue: renderValue, cursorPosition: cursorPosition }),
-                lastSelected && (React.createElement(Character, { className: "crt-cursor-symbol", selected: true }, cursorSymbol))))));
+                lastSelected && (React.createElement(Character, { className: "crt-cursor-symbol", selected: true }, cursorSymbol)),
+                recommendedCommand && (React.createElement("span", { className: classes$1.inputStringRecommendation },
+                    React.createElement(InputString, { renderValue: recommendedCommand.slice(inputValue.length).split(''), cursorPosition: 0 })))))));
 });
 
 var css_248z = ".terminal-module_terminal__4qfYI {\n  font-family: \"Courier New\", courier, monospace;\n  font-size: 1rem;\n  line-height: 1.5;\n  text-shadow: 0 0 1.1428571429rem #d0fc7e, 0 0 1.7142857143rem #d0fc7e;\n  color: #d0fc7e;\n  position: relative;\n  margin: 0;\n  padding: 1.1428571429rem 0.5714285714rem;\n  display: block;\n  overflow: hidden;\n  box-sizing: border-box;\n  width: 100%;\n  height: 100%;\n  max-height: 100%;\n  background: radial-gradient(50% 50% at 50% 50%, #354228 0, #0f140a 100%);\n  border: 1.1428571429rem solid #111010;\n  border-radius: 3.4285714286rem;\n  box-shadow: 0 0 2.8571428571rem #252925, inset 0 0 2rem 1.4285714286rem #000;\n  -webkit-font-smoothing: antialiased;\n}\n.terminal-module_terminal__4qfYI ::-moz-selection {\n  color: #111010;\n  background: #d0fc7e;\n  -moz-appearance: none;\n       appearance: none;\n}\n.terminal-module_terminal__4qfYI ::selection {\n  color: #111010;\n  background: #d0fc7e;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n}\n.terminal-module_terminal__4qfYI * {\n  box-sizing: border-box;\n}\n\n.terminal-module_overflowContainer__p2duW {\n  position: relative;\n  overflow-y: auto;\n  width: 100%;\n  max-height: 100%;\n  border-radius: 1.2857142857rem;\n}\n.terminal-module_overflowContainer__p2duW::-webkit-scrollbar {\n  width: 0.3571428571rem;\n  height: 0.3571428571rem;\n}\n.terminal-module_overflowContainer__p2duW::-webkit-scrollbar-button {\n  width: 0;\n  height: 0;\n}\n.terminal-module_overflowContainer__p2duW::-webkit-scrollbar-thumb {\n  background: #d0fc7e;\n  border: 0 none #fffcfc;\n  border-radius: 0.2857142857rem;\n}";
@@ -1434,7 +1456,7 @@ var Terminal = function Terminal(_a) {
                     React.createElement("div", { className: "crt-terminal__screen" },
                         React.createElement(TerminalScreen, { state: state })),
                     React.createElement("div", { className: "crt-terminal__command-line" },
-                        React.createElement(CommandLine, { ref: inputElementRef, prompt: prompt, cursorSymbol: cursorSymbol, state: commandLine.state, handleKeyboardDown: handleKeyboardDown, handleInputChange: handleInputChange })))))));
+                        React.createElement(CommandLine, { ref: inputElementRef, commandHistory: commandHistory.state.commandsHistory, prompt: prompt, cursorSymbol: cursorSymbol, state: commandLine.state, setInput: commandLine.handlers.setInput, handleKeyboardDown: handleKeyboardDown, handleInputChange: handleInputChange })))))));
 };
 
 export { LineTypes, PrinterEvents, Terminal, TerminalEvents, WordTypes, anchorWord, buttonWord, commandLine, commandWord, textLine, textWord, useEventQueue };

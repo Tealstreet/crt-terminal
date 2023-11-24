@@ -4,6 +4,8 @@ import { TerminalControllerReturnType } from '../../hooks/useTerminalController'
 interface CommandLineProps {
     prompt: string;
     cursorSymbol: string;
+    commandHistory: string[];
+    setInput: (value: string) => void;
     state: CommandLineState;
     handleKeyboardDown: TerminalControllerReturnType['handlers']['handleKeyboardDown'];
     handleInputChange: TerminalControllerReturnType['handlers']['handleInputChange'];
