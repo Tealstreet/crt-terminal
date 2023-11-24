@@ -380,14 +380,15 @@ var add = function (_a) {
     var sameCommand = commandsHistory[lastIndex] === command;
     if (sameCommand)
         return { commandsHistory: commandsHistory, cursorPosition: commandsLength };
-    var canAppend = command.trim().length && commandsLength < maxHistoryCommands;
-    if (canAppend)
+    var validCommand = command.trim().length;
+    var canAppend = commandsLength < maxHistoryCommands;
+    if (validCommand && canAppend)
         return {
             commandsHistory: __spreadArray(__spreadArray([], commandsHistory, true), [command], false),
             cursorPosition: commandsLength + 1,
         };
     var canReplace = Boolean(commandsLength);
-    if (canReplace) {
+    if (validCommand && canReplace) {
         return {
             commandsHistory: __spreadArray(__spreadArray([], commandsHistory.slice(1), true), [command], false),
             cursorPosition: commandsLength,
@@ -415,11 +416,17 @@ function useCommandHistory(_a) {
         setState(add({ maxHistoryCommands: maxHistoryCommands, commandsHistory: commandsHistory, command: command }));
     };
     useEffect(function () {
+        var newCommandsHistory = commandsHistory;
+        var newCursorPosition = cursorPosition;
         if (initCommandHistory) {
             initCommandHistory.forEach(function (command) {
-                addCommand(command);
+                // eslint-disable-next-line
+                var _a = add({ maxHistoryCommands: maxHistoryCommands, commandsHistory: newCommandsHistory, command: command }), _commandsHistory = _a.commandsHistory, _cursorPosition = _a.cursorPosition;
+                newCommandsHistory = _commandsHistory;
+                newCursorPosition = _cursorPosition;
             });
         }
+        setState({ commandsHistory: newCommandsHistory, cursorPosition: newCursorPosition });
         // eslint-disable-next-line
     }, []);
     var nextCommand = function () {

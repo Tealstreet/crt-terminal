@@ -28,7 +28,7 @@ export default function Web() {
     <Layout>
       <main className={classes.mainContainer}>
         <Terminal
-          initCommandHistory={['command word']}
+          initCommandHistory={['great', 'so good', 'amazing']}
           queue={eventQueue}
           onCommand={(command) =>
             print([

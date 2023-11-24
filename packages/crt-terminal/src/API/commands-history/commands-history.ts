@@ -60,15 +60,16 @@ const add = ({
   const sameCommand = commandsHistory[lastIndex] === command;
   if (sameCommand) return { commandsHistory, cursorPosition: commandsLength };
 
-  const canAppend = command.trim().length && commandsLength < maxHistoryCommands;
-  if (canAppend)
+  const validCommand = command.trim().length
+  const canAppend = commandsLength < maxHistoryCommands;
+  if (validCommand && canAppend)
     return {
       commandsHistory: [...commandsHistory, command],
       cursorPosition: commandsLength + 1,
     };
 
   const canReplace = Boolean(commandsLength);
-  if (canReplace) {
+  if (validCommand && canReplace) {
     return {
       commandsHistory: [...commandsHistory.slice(1), command],
       cursorPosition: commandsLength,

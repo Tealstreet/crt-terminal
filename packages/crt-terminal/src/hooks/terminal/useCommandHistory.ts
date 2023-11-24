@@ -46,11 +46,17 @@ function useCommandHistory({ maxHistoryCommands, initCommandHistory }: CommandHi
   };
 
   useEffect(() => {
+    let newCommandsHistory = commandsHistory;
+    let newCursorPosition = cursorPosition;
     if (initCommandHistory) {
       initCommandHistory.forEach((command) => {
-        addCommand(command);
+          // eslint-disable-next-line
+        const { commandsHistory: _commandsHistory, cursorPosition: _cursorPosition } =  add({ maxHistoryCommands, commandsHistory: newCommandsHistory, command })
+        newCommandsHistory = _commandsHistory;
+        newCursorPosition = _cursorPosition;
       });
     }
+    setState({ commandsHistory: newCommandsHistory, cursorPosition: newCursorPosition });
     // eslint-disable-next-line
   }, []);
 
