@@ -421,7 +421,7 @@ function useCommandHistory(_a) {
             });
         }
         // eslint-disable-next-line
-    }, [initCommandHistory]);
+    }, []);
     var nextCommand = function () {
         var _a = next$1({
             commandsHistory: commandsHistory,

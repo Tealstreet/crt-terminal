@@ -52,7 +52,7 @@ function useCommandHistory({ maxHistoryCommands, initCommandHistory }: CommandHi
       });
     }
     // eslint-disable-next-line
-  }, [initCommandHistory]);
+  }, []);
 
 
   const nextCommand = () => {
