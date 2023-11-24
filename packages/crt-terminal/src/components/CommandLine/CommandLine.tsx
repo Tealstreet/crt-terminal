@@ -51,9 +51,10 @@ const CommandLine = React.forwardRef<HTMLInputElement, CommandLineProps>(
       }, [commandHistory, inputValue]);
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // if key is right arrow and recommended command is available
+        // if key is right arrow or tab and recommended command is available
         // set input value to recommended command
-        if (event.key === 'ArrowRight' && recommendedCommand) {
+
+        if ((event.key === 'ArrowRight' || event.key === 'Tab') && recommendedCommand) {
             setInput(recommendedCommand);
             event.preventDefault();
             return;
